@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# fmt - colorized output for your bash scripts
+#
+# Copyright (C) 2014-2015 Ralph Hempel <rhempel@hempeldesigngroup.com>
+#
+# Based on "Template to write better bash scripts" from:
+# More info: http://kvz.io/blog/2013/02/26/introducing-bash3boilerplate/
+# Version 0.0.1
+#
+# Licensed under MIT
+# Copyright (c) 2013 Kevin van Zonneveld
+# http://twitter.com/kvz
+#
+# -----------------------------------------------------------------------------
+# Configuration
+# -----------------------------------------------------------------------------
+
+# Environment variables
+[ -z "${LOG_LEVEL}" ] && LOG_LEVEL="3" # 4 = debug -> 0 = fail
+
+# -----------------------------------------------------------------------------
+
+function _fmt () {
+  color_info="\x1b[32m"
+  color_warn="\x1b[33m"
+  color_error="\x1b[31m"
+
+  color=
+  [ "${1}" = "info" ] && color="${color_info}"
+  [ "${1}" = "warn" ] && color="${color_warn}"
+  [ "${1}" = "error" ] && color="${color_error}"
+  [ "${1}" = "fail" ] && color="${color_error}"
+
+  color_reset="\x1b[0m"
+  if [ "${TERM}" != "xterm" ] || [ -t 1 ]; then
+    # Don't use colors on pipes on non-recognized terminals
+    color=""
+    color_reset=""
+  fi
+  echo -e "$(date +"%H:%M:%S") [${color}$(printf "%5s" ${1})${color_reset}]";
+}
+
+function fail ()  {                             echo "$(_fmt fail) ${@}"  || true; exit 1; }
+function error () { [ "${LOG_LEVEL}" -ge 1 ] && echo "$(_fmt error) ${@}" || true;         }
+function warn ()  { [ "${LOG_LEVEL}" -ge 2 ] && echo "$(_fmt warn) ${@}"  || true;         }
+function info ()  { [ "${LOG_LEVEL}" -ge 3 ] && echo "$(_fmt info) ${@}"  || true;         }
+function debug () { [ "${LOG_LEVEL}" -ge 4 ] && echo "$(_fmt debug) ${@}" || true;         }
+
+# -----------------------------------------------------------------------------
