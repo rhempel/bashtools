@@ -8,10 +8,7 @@
 # More info: http://kvz.io/blog/2013/02/26/introducing-bash3boilerplate/
 # Version 0.0.1
 #
-# Licensed under MIT
-# Copyright (c) 2013 Kevin van Zonneveld
-# http://twitter.com/kvz
-#
+# See LICENSE for https://github.com/rhempel/bashtools
 # -----------------------------------------------------------------------------
 # Configuration
 # -----------------------------------------------------------------------------

@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# checkutil - A collection of handy functions for checking things
+#
+# checkutil     - exit if $1 is empty or does not match the current user
+# checkemptyvar - exit if $1 is empty or undefined
+#
+# Copyright (C) 2014-2015 Ralph Hempel <rhempel@hempeldesigngroup.com>
+#
+# See LICENSE for https://github.com/rhempel/bashtools
+# -----------------------------------------------------------------------------
+# REQUIRED SCRIPTS
+#
+# bashtools/src/fmt
+# -----------------------------------------------------------------------------
+
+function checkuser () {
+    if [[ -z "${1}" ]]; then
+        fail "Missing userid"
+    elif [[ "${1}" != "$(id -u -n)" ]]; then
+        fail "Must run as user - ${1}"
+    fi 
+}
+
+function checknotuser () {
+    if [[ -z "${1}" ]]; then
+        fail "Missing userid"
+    elif [[ "${1}" = "$(id -u -n)" ]]; then
+        fail "Must not run as user - ${1}"
+    fi 
+}
+
+# -----------------------------------------------------------------------------
+
+function checkemptyvar () {
+    if [[ -z "${!1}" ]]; then
+        fail  "$1 is \"${!1}\""
+    else
+        debug "$1 is \"${!1}\""
+    fi
+}
+
+# -----------------------------------------------------------------------------
